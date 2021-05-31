@@ -1,0 +1,23 @@
+{
+    "name": "OculusIntegration",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ddf183d42c839d7459bbd494bfafa0f0",
+        "GUID:508efd91fb5ca7d48a33499684255e67",
+        "GUID:7eecaac3435439943af85d99a47ed51c",
+        "GUID:f64c9ebcd7899c3448a08dc9f9ddbe30",
+        "GUID:334265d0b9fbea542b9a1e350be02314"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

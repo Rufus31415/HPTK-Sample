@@ -1,0 +1,19 @@
+{
+    "name": "WebXRIntegration",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ddf183d42c839d7459bbd494bfafa0f0"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WebGL"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
