@@ -1,6 +1,4 @@
 using Rufus31415.WebXR;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HandPhysicsToolkit.Input
@@ -8,46 +6,24 @@ namespace HandPhysicsToolkit.Input
 
     public class WebXRInputDataProvider : InputDataProvider
     {
-
-        /*
- * 0 - wrist
- * 1 - forearm
- * 
- * 2 - thumb0
- * 3 - thumb1
- * 4 - thumb2
- * 5 - thumb3
- * 
- * 6 - index1
- * 7 - index2
- * 8 - index3
- * 
- * 9 - middle1
- * 10 - middle2
- * 11 - middle3
- * 
- * 12 - ring1
- * 13 - ring2
- * 14 - ring3
- * 
- * 15 - pinky0
- * 16 - pinky1
- * 17 - pinky2
- * 18 - pinky3
- */
-
-
+        private Quaternion _webxrToHPTKRotation;
 
 
         public override void InitData()
         {
             base.InitData();
+
+            // convert rotation from WebXR to OVR/HPTK
+            _webxrToHPTKRotation = side == Helpers.Side.Right ? Quaternion.Euler(0, -90, 0) : Quaternion.Euler(0, -90, -180);
         }
 
         public override void UpdateData()
         {
             base.UpdateData();
 
+#if UNITY_EDITOR
+            var hand = GetTestHand(side);
+#else 
             if (!SimpleWebXR.InSession)
             {
                 confidence = 0;
@@ -55,8 +31,10 @@ namespace HandPhysicsToolkit.Input
             }
 
             var hand = side == Helpers.Side.Left ? SimpleWebXR.LeftInput.Hand : SimpleWebXR.RightInput.Hand;
+#endif
 
-            if (!hand.Available) {
+            if (!hand.Available)
+            {
                 confidence = 0;
                 return;
             }
@@ -95,16 +73,36 @@ namespace HandPhysicsToolkit.Input
             confidence = 1;
         }
 
-    private void SetBone(int i, WebXRJoint joint)
-    {
-        bones[i].space = Space.World;
-        bones[i].position = joint.Position;
-        bones[i].rotation = joint.Rotation;
-    }
+        private void SetBone(int i, WebXRJoint joint)
+        {
+            bones[i].space = Space.World;
+            bones[i].position = joint.Position;
+
+            var rotation = joint.Rotation * _webxrToHPTKRotation;
+
+            bones[i].rotation = rotation;
+        }
+
+#if UNITY_EDITOR
+        WebXRHand _leftHand;
+        WebXRHand _rightHand;
+
+        private WebXRHand GetTestHand(Helpers.Side side)
+        {
+            if (_leftHand == null)
+            {
+                var root = System.IO.Path.Combine(Application.dataPath, "HPTK", "Integrations", "WebXR", "Editor", "Tests");
+                _leftHand = JsonUtility.FromJson<WebXRHand>(System.IO.File.ReadAllText(System.IO.Path.Combine(root, "left1.json")));
+                _rightHand = JsonUtility.FromJson<WebXRHand>(System.IO.File.ReadAllText(System.IO.Path.Combine(root, "right1.json")));
+            }
+
+            return side == Helpers.Side.Left ? _leftHand : _rightHand;
+        }
+#endif
+
     }
 
 
 
 }
 
-   

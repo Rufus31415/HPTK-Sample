@@ -1176,6 +1176,7 @@ namespace Rufus31415.WebXR
     /// <summary>
     /// Joint of a hand. Each hand is made up many bones, connected by joints.
     /// </summary>
+    [Serializable()]
     public class WebXRJoint
     {
         /// <summary>
@@ -1198,6 +1199,7 @@ namespace Rufus31415.WebXR
     /// <summary>
     /// Describes the poses of hand skeleton joints
     /// </summary>
+    [Serializable()]
     public class WebXRHand
     {
         public WebXRHand()
@@ -1213,7 +1215,7 @@ namespace Rufus31415.WebXR
         /// <summary>
         /// Poses of hand skeleton joints
         /// </summary>
-        public readonly WebXRJoint[] Joints = new WebXRJoint[JOINT_COUNT];
+        public WebXRJoint[] Joints = new WebXRJoint[JOINT_COUNT];
 
         #region Constants
         /// <summary>
